@@ -1,0 +1,12 @@
+imageGen = {import:text-to-image-plugin}
+
+prompt = ""
+negativePrompt = ""
+
+final
+  prompt
+    $output = [prompt]
+  negativePrompt
+    $output = [negativePrompt]
+  onFinish(result) =>
+    onFinish(result)
