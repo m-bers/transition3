@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "https://m-bers.github.io/transition3/static/css/main.f855e6bc.css",
-    "main.js": "https://m-bers.github.io/transition3/static/js/main.b62f1948.js",
+    "main.js": "https://m-bers.github.io/transition3/static/js/main.8fa5e3df.js",
     "static/js/787.d4aba7ab.chunk.js": "https://m-bers.github.io/transition3/static/js/787.d4aba7ab.chunk.js",
     "static/media/logo.svg": "https://m-bers.github.io/transition3/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "https://m-bers.github.io/transition3/index.html",
     "main.f855e6bc.css.map": "https://m-bers.github.io/transition3/static/css/main.f855e6bc.css.map",
-    "main.b62f1948.js.map": "https://m-bers.github.io/transition3/static/js/main.b62f1948.js.map",
+    "main.8fa5e3df.js.map": "https://m-bers.github.io/transition3/static/js/main.8fa5e3df.js.map",
     "787.d4aba7ab.chunk.js.map": "https://m-bers.github.io/transition3/static/js/787.d4aba7ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.b62f1948.js"
+    "static/js/main.8fa5e3df.js"
   ]
 }
