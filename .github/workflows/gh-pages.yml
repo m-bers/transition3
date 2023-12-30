@@ -8,10 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      run: npm install; npm run deploy
+    - name: Use Node.js
+      run: npm install
+    - name: Build and Deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token
+      run: npm run deploy
