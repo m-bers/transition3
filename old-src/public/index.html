@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    .MuiTypography-body1 {
+      text-align: left;
+    }
+  </style>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="initial-scale=1, width=device-width" />
+  <title>CRA + Material UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" />
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <div id="backend-output">[output]</div>
+
+  <script>
+    function Generate() {
+      generate = 1;
+      console.log("Generate() called.")
+      // setTimeout(() => {update()}, 10);
+      update();
+    }
+    function Output(final) {
+      if (generate) {
+        Input((dataValues, dataCount) => {
+          let x = 0;
+          const outputArray = new Array(parseInt(dataCount, 10)).fill(0).map((a) => {
+            x++;
+            let parsedData = {};
+            if (dataValues[x - 1]) {
+              try {
+                parsedData = JSON.parse(dataValues[x - 1]);
+              } catch (e) {
+                console.error('Error parsing JSON:', e);
+                return `<div>Error in data</div>`; // Handle invalid JSON
+              }
+            }
+
+            // Initialize empty arrays for prompt and negativePrompt
+            const promptArray = [];
+            const negativePromptArray = [];
+
+            if (parsedData.prompt) {
+              // Loop through the structured prompt array
+              parsedData.prompt.forEach((item) => {
+                if (item.type === 'global') {
+                  // For 'global' type, add the 'tag' to promptArray
+                  promptArray.push(item.tag);
+                } else if (item.type === 'transition') {
+                  // For 'transition' type, create the bracketed format and add to promptArray
+                  promptArray.push(`\\\\[${item.after}:${item.before}:${item.value}\\\\]`);
+                }
+              });
+            } else {
+              // If no structured prompt, use a default value
+              promptArray.push('defaultPromptValue');
+            }
+
+            // Similar logic for negativePrompt
+            if (parsedData.negativePrompt) {
+              parsedData.negativePrompt.forEach((item) => {
+                if (item.type === 'global') {
+                  negativePromptArray.push(item.tag);
+                } else if (item.type === 'transition') {
+                  negativePromptArray.push(`\\\\[${item.after}:${item.before}:${item.value}\\\\]`);
+                }
+              });
+            } else {
+              negativePromptArray.push('defaultNegativePromptValue');
+            }
+
+            // Assign the generated prompt and negativePrompt to final
+            prompt = promptArray.join(', ');
+            negativePrompt = negativePromptArray.join(', ');
+
+            // Rest of your code...
+            final.seed = parsedData.seed || 'defaultSeedValue';
+            final.guidanceScale = parsedData.guidanceScale || 'defaultGuidanceScale';
+            final.resolution = parsedData.resolution || 'defaultResolution';
+
+            const promptDataElement = document.getElementById(`prompt-data-${x - 1}`);
+            if (promptDataElement) {
+              promptDataElement.innerHTML = `<div id="image-${x - 1}">${imageGen(final)}</div>`;
+            }
+
+            return '';
+          });
+          document.getElementById('backend-output').innerHTML = outputArray.join('');
+          return '';
+        });
+      } else {
+        document.getElementById('backend-output').innerHTML = '';
+        return '';
+      }
+      return '';
+    }
+
+    function Input(callback) {
+      const observer = new MutationObserver((mutationsList, observer) => {
+        const mainBox = document.getElementById('main-box');
+        if (mainBox) {
+          const dataCount = mainBox.getAttribute('data-count');
+          const dataValues = [];
+
+          for (let i = 0; i < dataCount; i++) {
+            const elementId = `prompt-data-${i}`;
+            const element = document.getElementById(elementId);
+
+            if (element) {
+              const dataValue = element.getAttribute('data');
+              dataValues.push(dataValue);
+            }
+          }
+
+          observer.disconnect();
+          callback(dataValues, dataCount); // Pass dataCount here
+        }
+      });
+
+      observer.observe(document, { childList: true, subtree: true });
+    }
+
+    function onFinish(result) {
+      let iframe = result.iframe;
+      let canvas = result.canvas;
+      iframe.replaceWith(canvas);
+      canvas.style.width = iframe.style.width;
+      canvas.style.height = iframe.style.height;
+    }
+  </script>
+</body>
+
+</html>
