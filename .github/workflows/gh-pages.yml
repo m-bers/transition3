@@ -6,15 +6,35 @@ on:
   pull_request:
     branches: [ master ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # specify your node version
+
+    - name: Install Dependencies
       run: npm install
-    - name: Build and Deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token
-      run: npm run deploy
+
+    - name: Build
+      run: npm run build # Assuming your npm build script generates the 'build' directory
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+       **⬤**
