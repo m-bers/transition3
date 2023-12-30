@@ -14,6 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      run: npm run build
-    - name: Deploy React app to Github pages
-      uses: tanwanimohit/deploy-react-to-ghpages@v1.0
+      run: npm run install; npn run deploy
