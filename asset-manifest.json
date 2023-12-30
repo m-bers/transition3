@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "https://m-bers.github.io/transition3/static/js/main.d1e73434.js",
+    "main.js": "https://m-bers.github.io/transition3/static/js/main.cdd3e89e.js",
     "index.html": "https://m-bers.github.io/transition3/index.html",
-    "main.d1e73434.js.map": "https://m-bers.github.io/transition3/static/js/main.d1e73434.js.map"
+    "main.cdd3e89e.js.map": "https://m-bers.github.io/transition3/static/js/main.cdd3e89e.js.map"
   },
   "entrypoints": [
-    "static/js/main.d1e73434.js"
+    "static/js/main.cdd3e89e.js"
   ]
 }
