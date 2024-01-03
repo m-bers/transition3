@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "https://m-bers.github.io/transition3/static/css/main.dc4d6ff2.css",
-    "main.js": "https://m-bers.github.io/transition3/static/js/main.e27ff598.js",
+    "main.js": "https://m-bers.github.io/transition3/static/js/main.f1079247.js",
     "index.html": "https://m-bers.github.io/transition3/index.html",
     "main.dc4d6ff2.css.map": "https://m-bers.github.io/transition3/static/css/main.dc4d6ff2.css.map",
-    "main.e27ff598.js.map": "https://m-bers.github.io/transition3/static/js/main.e27ff598.js.map"
+    "main.f1079247.js.map": "https://m-bers.github.io/transition3/static/js/main.f1079247.js.map"
   },
   "entrypoints": [
     "static/css/main.dc4d6ff2.css",
-    "static/js/main.e27ff598.js"
+    "static/js/main.f1079247.js"
   ]
 }
