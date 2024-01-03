@@ -86,8 +86,8 @@ export default function Prompt({ promptType, onPromptDataChange, initialPrompts 
     const newPrompt = {
       type: 'transition',
       id: `item-${prompts.length}`,
-      after: { tag: '', value: 100 },
-      before: { tag: '', value: 0 },
+      after: { tag: '', value: 0 },
+      before: { tag: '', value: 100 },
     };
     setPrompts([...prompts, newPrompt]);
   };
@@ -158,8 +158,8 @@ export default function Prompt({ promptType, onPromptDataChange, initialPrompts 
             </Grid>
             <Stack spacing={2} direction="column">
               <Stack spacing={1} direction="row" justifyContent="center">
-                <Button variant="contained" onClick={addGlobal}>Global</Button>
-                <Button variant="contained" onClick={addTransition}>Transition</Button>
+                <Button sx={{ color: (theme) => theme.palette.primary.contrastText }} variant="contained" onClick={addGlobal}>Global</Button>
+                <Button sx={{ color: (theme) => theme.palette.primary.contrastText }} variant="contained" onClick={addTransition}>Transition</Button>
               </Stack>
               <Divider />
             </Stack>

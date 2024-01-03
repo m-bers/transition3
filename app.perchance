@@ -8,5 +8,3 @@ final
     $output = [prompt]
   negativePrompt
     $output = [negativePrompt]
-  onFinish(result) =>
-    onFinish(result)

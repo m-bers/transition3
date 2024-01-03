@@ -35,16 +35,18 @@ export default function App() {
   const [antiPromptData, setAntiPromptData] = useState([]);
   const [settingsData, setSettingsData] = useState({ resolution: '512x768', count: 21, seed: 104, guidance: 7 });
   const [shouldGenerate, setShouldGenerate] = useState(false); // New state for triggering generation
-  const [hasStarted, setHasStarted] = useState(false);
-  const [startSelectedIndex, setStartSelectedIndex] = useState(null);
-  const [endSelectedIndex, setEndSelectedIndex] = useState(null);
-  const [localMainPromptData, setLocalMainPromptData] = useState(mainPromptData);
-  const [localAntiPromptData, setLocalAntiPromptData] = useState(antiPromptData);
   const [randomSeeds, setRandomSeeds] = useState([]);
   const [isRandomGeneration, setIsRandomGeneration] = useState(false);
   const [allCanvasPresent, setAllCanvasPresent] = useState(false);
   const [renderTrigger, setRenderTrigger] = useState(0);
   const [debugMode, setDebugMode] = React.useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imageSizeValue, setImageSizeValue] = useState(78 / 128);
+  const [hasStarted, setHasStarted]=useState(false);
+
+  const handleImageSizeChange = (event, newValue) => {
+    setImageSizeValue(newValue);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -96,6 +98,14 @@ export default function App() {
     }
   };
 
+  const handleImageUpload = (file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUploadedImage(reader.result); // this will be a base64 string
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Callback functions for updating main and anti prompts
   const handleMainPromptDataChange = useCallback((data) => {
     console.log('Updating mainPromptData:', JSON.stringify(data)); // Add this line
@@ -127,13 +137,8 @@ export default function App() {
   };
 
   const handleGenerate = () => {
-    // setMainPromptData(localMainPromptData);
-    // setAntiPromptData(localAntiPromptData);
-    setShouldGenerate(true); // Always set to true to trigger generation
-    // setHasStarted(true);
-    // setStartSelectedIndex(null);
-    // setEndSelectedIndex(null);
-    // setAllCanvasPresent(false); // Reset the canvas check
+    setHasStarted(true);
+    setShouldGenerate(true);
   }
 
   const handleDownload = async () => {
@@ -176,6 +181,8 @@ export default function App() {
         setDebugMode={setDebugMode}
         allCanvasPresent={allCanvasPresent}
         setAllCanvasPresent={setAllCanvasPresent}
+        imageSizeValue={imageSizeValue}
+        handleImageSizeChange={handleImageSizeChange}
 
       />
       <Drawer drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}>
@@ -196,30 +203,32 @@ export default function App() {
           setAntiPromptData={setAntiPromptData} // Pass the function as a prop
           antiPromptData={antiPromptData} // Pass mainPromptData as a prop
         />
-        <Settings onSettingsChange={handleSettingsChange} initialSettings={settingsData} />
+        <Settings onSettingsChange={handleSettingsChange} initialSettings={settingsData} onImageUpload={handleImageUpload} />
 
 
 
       </Drawer>
       <MainComponent
+        // drawerWidth,
+        // seed,
+        // guidanceScale,
+        // resolution,
+        // mainPromptData,
+        // antiPromptData,
+        // count,
+        // debugMode,
+        // shouldGenerate,
+        // setShouldGenerate,
+        // uploadedImage
         drawerWidth={drawerWidth}
         count={settingsData.count}
         mainPromptData={mainPromptData}
         antiPromptData={antiPromptData}
-        localMainPromptData={localMainPromptData}
-        localAntiPromptData={localAntiPromptData}
-        setLocalMainPromptData={setLocalMainPromptData}
-        setLocalAntiPromptData={setLocalAntiPromptData}
         seed={settingsData.seed}
         guidanceScale={settingsData.guidance}
         resolution={settingsData.resolution}
         shouldGenerate={shouldGenerate}
         setShouldGenerate={setShouldGenerate}
-        hasStarted={hasStarted}
-        startSelectedIndex={startSelectedIndex}
-        setStartSelectedIndex={setStartSelectedIndex}
-        endSelectedIndex={endSelectedIndex}
-        setEndSelectedIndex={setEndSelectedIndex}
         isRandomGeneration={isRandomGeneration}
         randomSeeds={randomSeeds}
         allCanvasPresent={allCanvasPresent}
@@ -228,6 +237,12 @@ export default function App() {
         renderTrigger={renderTrigger}
         // New props
         debugMode={debugMode}
+        uploadedImage={uploadedImage}
+        imageSizeValue={imageSizeValue}
+        handleImageSizeChange={handleImageSizeChange}
+        handleTransition={handleTransition}
+        handleRandomize={handleRandomize}
+        settingsData={settingsData}
       >
         <Alert sx={{ color: (theme) => theme.palette.text.primary }} variant="outlined" icon={" "} color="primary">
           <Stack spacing={2} direction="column" alignItems="center" sx={{ mb: 1, maxWidth: 480 }} >
@@ -406,3 +421,126 @@ export default function App() {
     </Box>
   );
 }
+
+// import * as React from 'react';
+// import { styled } from '@mui/material/styles';
+// import Box from '@mui/material/Box';
+// import ButtonBase from '@mui/material/ButtonBase';
+// import Typography from '@mui/material/Typography';
+
+// const images = [
+//   {
+//     url: 'https://mui.com/static/images/buttons/breakfast.jpg',
+//     title: 'Breakfast',
+//     width: '40%',
+//   },
+//   {
+//     url: 'https://mui.com/static/images/buttons/burgers.jpg',
+//     title: 'Burgers',
+//     width: '30%',
+//   },
+//   {
+//     url: 'https://mui.com/static/images/buttons/camera.jpg',
+//     title: 'Camera',
+//     width: '30%',
+//   },
+// ];
+
+// const ImageButton = styled(ButtonBase)(({ theme }) => ({
+//   position: 'relative',
+//   height: 200,
+//   [theme.breakpoints.down('sm')]: {
+//     width: '100% !important', // Overrides inline-style
+//     height: 100,
+//   },
+//   '&:hover, &.Mui-focusVisible': {
+//     zIndex: 1,
+//     '& .MuiImageBackdrop-root': {
+//       opacity: 0.15,
+//     },
+//     '& .MuiImageMarked-root': {
+//       opacity: 0,
+//     },
+//     '& .MuiTypography-root': {
+//       border: '4px solid currentColor',
+//     },
+//   },
+// }));
+
+// const ImageSrc = styled('span')({
+//   position: 'absolute',
+//   left: 0,
+//   right: 0,
+//   top: 0,
+//   bottom: 0,
+//   backgroundSize: 'cover',
+//   backgroundPosition: 'center 40%',
+// });
+
+// const Image = styled('span')(({ theme }) => ({
+//   position: 'absolute',
+//   left: 0,
+//   right: 0,
+//   top: 0,
+//   bottom: 0,
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+//   color: theme.palette.common.white,
+// }));
+
+// const ImageBackdrop = styled('span')(({ theme }) => ({
+//   position: 'absolute',
+//   left: 0,
+//   right: 0,
+//   top: 0,
+//   bottom: 0,
+//   backgroundColor: theme.palette.common.black,
+//   opacity: 0.4,
+//   transition: theme.transitions.create('opacity'),
+// }));
+
+// const ImageMarked = styled('span')(({ theme }) => ({
+//   height: 3,
+//   width: 18,
+//   backgroundColor: theme.palette.common.white,
+//   position: 'absolute',
+//   bottom: -2,
+//   left: 'calc(50% - 9px)',
+//   transition: theme.transitions.create('opacity'),
+// }));
+
+// export default function ButtonBaseDemo() {
+//   return (
+//     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+//       {images.map((image) => (
+//         <ImageButton
+//           focusRipple
+//           key={image.title}
+//           style={{
+//             width: image.width,
+//           }}
+//         >
+//           <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+//           <ImageBackdrop className="MuiImageBackdrop-root" />
+//           <Image>
+//             <Typography
+//               component="span"
+//               variant="subtitle1"
+//               color="inherit"
+//               sx={{
+//                 position: 'relative',
+//                 p: 4,
+//                 pt: 2,
+//                 pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+//               }}
+//             >
+//               {image.title}
+//               <ImageMarked className="MuiImageMarked-root" />
+//             </Typography>
+//           </Image>
+//         </ImageButton>
+//       ))}
+//     </Box>
+//   );
+// }
